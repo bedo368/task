@@ -1,17 +1,10 @@
-import 'dart:convert';
-
-List<PostModel> postModelFromJson(String str) =>
-    List<PostModel>.from(json.decode(str).map((x) => PostModel.fromJson(x)));
-
-String postModelToJson(List<PostModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class PostModel {
-  int userId;
-  int id;
-  String title;
-  String body;
+  int userId; // User ID of the post author
+  int id; // Unique ID of the post
+  String title; // Title of the post
+  String body; // Body/content of the post
 
+  // Constructor for creating a PostModel instance
   PostModel({
     required this.userId,
     required this.id,
@@ -19,6 +12,7 @@ class PostModel {
     required this.body,
   });
 
+  // Factory method to create a PostModel instance from a JSON map
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
         userId: json["userId"],
         id: json["id"],
@@ -26,6 +20,7 @@ class PostModel {
         body: json["body"],
       );
 
+  // Method to convert a PostModel instance to a JSON map
   Map<String, dynamic> toJson() => {
         "userId": userId,
         "id": id,

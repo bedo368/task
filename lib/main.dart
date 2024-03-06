@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:task/src/post/cubit/posts_cubit.dart';
-import 'package:task/src/post/post_repositry.dart';
+import 'package:task/modules/post/cubit/posts_cubit.dart';
+import 'package:task/modules/post/post_repositry.dart';
+import 'package:task/utils/hive_service.dart';
 import 'package:task/views/pots_scressn/posts_screen.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  final HiveService hs = HiveService();
+  await hs.init();
 
   runApp(const MyApp());
 }

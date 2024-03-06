@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task/src/post/cubit/posts_cubit.dart';
-import 'package:task/src/post/cubit/posts_state.dart';
+import 'package:task/modules/post/cubit/posts_cubit.dart';
+import 'package:task/modules/post/cubit/posts_state.dart';
 
 class PostsScreen extends StatelessWidget {
   const PostsScreen({super.key});
@@ -17,7 +17,6 @@ class PostsScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (state is PostLoadedState) {
-          print(state.posts.length);
           return ListView.builder(
               controller: sc,
               itemCount: state.posts.length,
