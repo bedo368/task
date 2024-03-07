@@ -22,12 +22,12 @@ class PostCubit extends Cubit<PostState> {
       _posts.addAll(posts);
 
       emit(PostLoadedState(posts: _posts));
-      if (await checkInternetConnection() || posts.isNotEmpty ) {
+      if (await checkInternetConnection() || posts.isNotEmpty) {
         _startIndex += posts.length;
       }
     } catch (e) {
       // Handle errors by emitting a PostError state with the error message
-      emit(PostError(message: e.toString()));
+      emit(PostError(message: e.toString(), posts: _posts));
     }
   }
 }

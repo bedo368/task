@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/modules/post/cubit/posts_cubit.dart';
@@ -44,25 +42,79 @@ class _PostsScreenState extends State<PostsScreen> {
     return Scaffold(
       body: CustomScrollView(
         controller: _controller,
-        slivers: [
-          const SliverToBoxAdapter(child: PostScreenTopBar()),
-          const PostsBuilder(),
-          BlocConsumer<PostCubit, PostState>(
-              builder: (context, state) {
-                return state is PostLoadingMoreData
-                    ? SliverToBoxAdapter(
-                        child: Transform.translate(
-                          offset: const Offset(0, -20),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      )
-                    : const SliverToBoxAdapter();
-              },
-              listener: (context, state) {})
+        slivers: const [
+          SliverToBoxAdapter(child: PostScreenTopBar()),
+          PostsBuilder(),
+          LoadingMoreDataIndecator(),
+          ShowSnakbarError()
         ],
       ),
     );
+  }
+}
+
+class ShowSnakbarError extends StatelessWidget {
+  const ShowSnakbarError({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: BlocListener<PostCubit, PostState>(
+        listener: (context, state) {
+          if (state is PostError) {
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          state.message,
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            context.read<PostCubit>().fetchPosts();
+                          },
+                          child: const Text("reload")),
+                    ],
+                  ),
+                ),
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        },
+        child: Container(),
+      ),
+    );
+  }
+}
+
+class LoadingMoreDataIndecator extends StatelessWidget {
+  const LoadingMoreDataIndecator({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<PostCubit, PostState>(
+        builder: (context, state) {
+          return state is PostLoadingMoreData
+              ? SliverToBoxAdapter(
+                  child: Transform.translate(
+                    offset: const Offset(0, -20),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                )
+              : const SliverToBoxAdapter();
+        },
+        listener: (context, state) {});
   }
 }

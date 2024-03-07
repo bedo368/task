@@ -40,23 +40,14 @@ class PostsBuilder extends StatelessWidget {
       }
 
       if (state is PostError) {
-        return SliverToBoxAdapter(
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  state.message,
-                ),
-                TextButton(
-                    onPressed: () {
-                      context.read<PostCubit>().fetchPosts();
-                    },
-                    child: const Text("reload")),
-              ],
-            ),
-          ),
-        );
+        return SliverList.builder(
+            itemCount: state.posts.length,
+            itemBuilder: (context, index) {
+              final post = state.posts[index];
+              return PostCard(
+                post: post,
+              );
+            });
       }
       return SliverToBoxAdapter(child: Container());
     });

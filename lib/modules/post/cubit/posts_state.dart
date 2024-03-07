@@ -27,6 +27,10 @@ class PostLoadingMoreData extends PostState {
 // State indicating that an error occurred while loading or fetching post-related data
 class PostError extends PostState {
   final String message; // Error message describing the cause of the error
+  final List<PostModel> posts; // the current posts
 
-  PostError({required this.message});
+  PostError({
+    required this.message,
+    required this.posts,
+  });
 }
