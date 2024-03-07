@@ -14,10 +14,12 @@ class PostRepository {
       if (connectionState) {
         // If there's internet connection, fetch posts from API
         return _postProvider.fetchPostsFromApi(startIndex, limit);
-      } else {
-        // If no internet connection, fetch posts from local storage (Hive)
-        return _postProvider.fetchPostsFromHiveStorage(startIndex, limit);
       }
+      if (!connectionState && startIndex == 0) {
+        // If no internet connection, fetch posts from local storage (Hive)
+        return _postProvider.fetchPostsFromHiveStorage(startIndex);
+      }
+      return [];
     } catch (e) {
       // Handle any errors that occur during fetching
       throw "Failed to load posts";

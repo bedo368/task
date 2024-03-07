@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:task/modules/post/post_model.dart';
+import 'package:task/utils/check_internt_conection.dart';
 import 'package:task/utils/hive_service.dart';
 
 class PostApiProvider {
@@ -25,7 +26,10 @@ class PostApiProvider {
             body.map((dynamic item) => PostModel.fromJson(item)).toList();
 
         // Add fetched posts to local storage (Hive)
-        await _hiveProvider.addMorePost(posts);
+
+        if (await checkInternetConnection()) {
+          await _hiveProvider.addMorePost(posts: posts, startIdex: startIndex);
+        }
 
         // Return the list of fetched posts
         return posts;
@@ -40,8 +44,7 @@ class PostApiProvider {
   }
 
   // Fetch posts from local storage (Hive)
-  Future<List<PostModel>> fetchPostsFromHiveStorage(
-      int startIndex, int limit) async {
+  Future<List<PostModel>> fetchPostsFromHiveStorage(int startIndex) async {
     try {
       // Retrieve posts from local storage using HiveService
       return await _hiveProvider.getPostsFrom();

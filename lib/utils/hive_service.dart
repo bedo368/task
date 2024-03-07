@@ -29,20 +29,28 @@ class HiveService {
     try {
       var posts = _postBox.values.toList();
       posts.sort((a, b) => a.userId.compareTo(b.userId));
+      if (posts.isEmpty) {
+        throw "you are offline and there is no stored data";
+      }
       return posts;
     } catch (e) {
       // Handle error getting posts
-      return [];
+      throw "you are offline and there is no stored data";
     }
   }
 
   // Add more posts to the box
-  Future<void> addMorePost(List<PostModel> posts) async {
+  Future<void> addMorePost(
+      {required List<PostModel> posts, required int startIdex}) async {
     try {
       final bool con = await checkInternetConnection();
       // Check if the box is full and there's internet connection to clear posts
-      if (_postBox.length >= 100 && con) {
-        crelarPosts();
+
+      if (!con) {
+        return;
+      }
+      if (startIdex == 0) {
+        _postBox.clear();
       }
       await _postBox.addAll(posts);
     } catch (e) {
