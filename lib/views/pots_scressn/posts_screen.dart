@@ -16,7 +16,6 @@ class PostsScreen extends StatefulWidget {
 
 class _PostsScreenState extends State<PostsScreen> {
   final ScrollController _controller = ScrollController();
-  Timer? _debounce;
 
   @override
   void initState() {

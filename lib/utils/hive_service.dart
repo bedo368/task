@@ -50,7 +50,7 @@ class HiveService {
         return;
       }
       if (startIdex == 0) {
-        _postBox.clear();
+        await _postBox.clear();
       }
       await _postBox.addAll(posts);
     } catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task/modules/post/cubit/posts_state.dart';
 import 'package:task/modules/post/post_model.dart';
 import 'package:task/modules/post/post_repositry.dart';
+import 'package:task/utils/check_internt_conection.dart';
 
 class PostCubit extends Cubit<PostState> {
   final PostRepository _postRepository;
@@ -19,8 +20,11 @@ class PostCubit extends Cubit<PostState> {
       final posts =
           await _postRepository.fetchPosts(_startIndex, _limit); // Fetch posts
       _posts.addAll(posts);
-      _startIndex += _limit;
+
       emit(PostLoadedState(posts: _posts));
+      if (await checkInternetConnection() || posts.isNotEmpty ) {
+        _startIndex += posts.length;
+      }
     } catch (e) {
       // Handle errors by emitting a PostError state with the error message
       emit(PostError(message: e.toString()));
