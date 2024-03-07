@@ -40,6 +40,26 @@ class PostsBuilder extends StatelessWidget {
       }
 
       if (state is PostError) {
+        print(state);
+        if (state.posts.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.message,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        context.read<PostCubit>().fetchPosts();
+                      },
+                      child: const Text("reload")),
+                ],
+              ),
+            ),
+          );
+        }
         return SliverList.builder(
             itemCount: state.posts.length,
             itemBuilder: (context, index) {

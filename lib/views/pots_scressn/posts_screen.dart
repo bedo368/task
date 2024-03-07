@@ -4,6 +4,7 @@ import 'package:task/modules/post/cubit/posts_cubit.dart';
 import 'package:task/modules/post/cubit/posts_state.dart';
 import 'package:task/views/pots_scressn/widgets/post_builder.dart';
 import 'package:task/views/pots_scressn/widgets/post_screen_top_bar.dart';
+import 'package:task/views/pots_scressn/widgets/show_snakbar_error.dart';
 
 class PostsScreen extends StatefulWidget {
   const PostsScreen({super.key});
@@ -53,47 +54,7 @@ class _PostsScreenState extends State<PostsScreen> {
   }
 }
 
-class ShowSnakbarError extends StatelessWidget {
-  const ShowSnakbarError({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: BlocListener<PostCubit, PostState>(
-        listener: (context, state) {
-          if (state is PostError) {
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          state.message,
-                        ),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            context.read<PostCubit>().fetchPosts();
-                          },
-                          child: const Text("reload")),
-                    ],
-                  ),
-                ),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
-        },
-        child: Container(),
-      ),
-    );
-  }
-}
 
 class LoadingMoreDataIndecator extends StatelessWidget {
   const LoadingMoreDataIndecator({
