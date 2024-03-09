@@ -4,7 +4,7 @@ import 'package:task/modules/post/post_model.dart';
 import 'package:task/utils/check_internt_conection.dart';
 import 'package:task/utils/hive_service.dart';
 
-class PostApiProvider {
+class PostProvider {
   final String baseUrl = "https://jsonplaceholder.typicode.com";
   final _hiveProvider =
       HiveService(); // Instance of HiveService for local storage

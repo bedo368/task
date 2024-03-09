@@ -3,9 +3,11 @@ import 'package:task/modules/post/post_provider.dart';
 import 'package:task/utils/check_internt_conection.dart';
 
 class PostRepository {
-  final _postProvider =
-      PostApiProvider(); // Instance of PostApiProvider for fetching posts
-
+  final PostProvider
+      _postProvider; // Instance of PostApiProvider for fetching posts
+  PostRepository(
+    this._postProvider,
+  );
   // Fetches posts either from API or local storage based on internet connection
   Future<List<PostModel>> fetchPosts(int startIndex, int limit) async {
     try {
